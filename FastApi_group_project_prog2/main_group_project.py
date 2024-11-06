@@ -63,9 +63,9 @@ def is_time_slot_available(classroom_id: int, requested_start_time: datetime, re
     
 
 @app.get("/classrooms/", response_model=List[Classroom]) 
-
 async def list_classrooms(): 
     return list(classroom_db.values()) #Returns all classrooms 
+
 
 @app.post("/booking/{classroom_id}", response_model=Booking)
 async def book_classroom(classroom_id: int, start_time: datetime, end_time: datetime):
@@ -85,11 +85,14 @@ async def book_classroom(classroom_id: int, start_time: datetime, end_time: date
         end time, 2024-11-07t16:30
         
 
+    Entire path with querys example:
+    
+        /booking/3?start_time=2024-12-10t15%3A30&end_time=2024-12-11t17%3A30
+
     returns: 
         this function returns a booking if successfull 
 
     raise:
-
 
         httpexecption: raises 400 status code if start time is in the past
         httpexecption: raises 404 status code if the classroom does not exist
@@ -124,13 +127,17 @@ async def delete_booking(booking_id: str):
     
         We used a simple for loop, to iterate over the booking database with the key b, then we 
         compare the key(b) and the booking database booking_ID, to see if they're the same.
+        we also make sure to remove the booking from the booking database. 
 
+        Entire path with querys example:
+
+            /booking/94f70b2e-72e7-4780-bb84-8fd577ffefaf 
+            
         returns:
-                The booking, so that the user sees the deleted booking. 
-
+                this function returns booking, if DELETE successfull 
         raise:
 
-                httpexecption: raises 404 if we can't find the booking. 
+            httpexecption: raises 404 status code if we can't find the booking. 
     """
       
     for b in booking_db: 
