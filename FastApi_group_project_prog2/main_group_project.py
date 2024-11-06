@@ -5,7 +5,7 @@ import uvicorn
 from typing import List
 from datetime import datetime
 
-app = FastAPI() # Makes app a variable to run FastApi 
+app = FastAPI() # Creating the FastAPI app  
 
 class Classroom(BaseModel): #Creating a  response model for classrooms
     id: int
