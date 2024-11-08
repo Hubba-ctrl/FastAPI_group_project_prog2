@@ -63,12 +63,12 @@ def is_time_slot_available(classroom_id: int, requested_start_time: datetime, re
     
 
 @app.get("/classrooms/", response_model=List[Classroom]) 
-async def list_classrooms(): 
+def list_classrooms(): 
     return list(classroom_db.values()) #Returns all classrooms 
 
 
 @app.post("/booking/{classroom_id}", response_model=Booking)
-async def book_classroom(classroom_id: int, start_time: datetime, end_time: datetime):
+def book_classroom(classroom_id: int, start_time: datetime, end_time: datetime):
     """ 
     
     This function is created to book classrooms. With the help of is_time_slot_available it also
@@ -78,15 +78,15 @@ async def book_classroom(classroom_id: int, start_time: datetime, end_time: date
         Using Arguments following the response model Booking
              
     
-    Write classroom_ID and time:
+    Write classroom_ID and time (example):
 
         classroom_ID, either 1,2 or 3 
         start time, 2024-11-07t13:30 
         end time, 2024-11-07t16:30
         
 
-    Entire path with querys example:
-    
+    Entire request path with querys example:
+     
         /booking/3?start_time=2024-12-10t15%3A30&end_time=2024-12-11t17%3A30
 
     returns: 
@@ -97,7 +97,6 @@ async def book_classroom(classroom_id: int, start_time: datetime, end_time: date
         httpexecption: raises 400 status code if start time is in the past
         httpexecption: raises 404 status code if the classroom does not exist
         httpexecption: raises 409 status code if the bookings overlap
-
 
     """
     
@@ -121,7 +120,7 @@ async def book_classroom(classroom_id: int, start_time: datetime, end_time: date
 
 
 @app.delete("/booking/{booking_id}", response_model=Booking)
-async def delete_booking(booking_id: str):
+def delete_booking(booking_id: str):
     """
         Delete a booking by ID and return the deleted booking details.
     
@@ -129,12 +128,13 @@ async def delete_booking(booking_id: str):
         compare the key(b) and the booking database booking_ID, to see if they're the same.
         we also make sure to remove the booking from the booking database. 
 
-        Entire path with querys example:
+        Entire path example:
 
             /booking/94f70b2e-72e7-4780-bb84-8fd577ffefaf 
             
         returns:
-                this function returns booking, if DELETE successfull 
+                this function returns the deleted booking, if DELETE successfull 
+      
         raise:
 
             httpexecption: raises 404 status code if we can't find the booking. 
